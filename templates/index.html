@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판</title>
+</head>
+<body>
+    <h1>게시판</h1>
+
+    <a href="/write">글쓰기</a>
+
+    <hr>
+
+    {% for post in posts %}
+        <h3>
+            <a href="/post/{{ post.id }}">{{ post.title }}</a>
+        </h3>
+        <p>{{ post.content }}</p>
+        <hr>
+    {% endfor %}
+</body>
+</html>

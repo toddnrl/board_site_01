@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>상세보기</title>
+</head>
+<body>
+    <h1>{{ post.title }}</h1>
+
+    <p>{{ post.content }}</p>
+
+    <a href="/">목록으로</a>
+    |
+    <a href="/delete/{{ post.id }}">삭제</a>
+</body>
+</html>
