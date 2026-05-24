@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/create" method="POST">
+        <input type="text" name="title" placeholder="제목 입력"><br>
+
+        <textarea name="message" placeholder="내용 입력"></textarea>
+        <button>저장</button>
+        <a href="/delete/{{ memo.id }}">삭제</a>
+    </form>
+</body>
+</html>
+
+
+{% for memo in memos %}
+    <div>
+        <h3>{{ memo.title }}</h3>
+        <p>{{ memo.message }}</p>
+        
+    </div>
+{% endfor %}
