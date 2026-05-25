@@ -6,12 +6,15 @@
     <title>Document</title>
 </head>
 <body>
+    <p>{{ session.username }}님 안녕하세요</p>
+    <a href="/logout">로그아웃</a>
+
     <form action="/create" method="POST">
         <input type="text" name="title" placeholder="제목 입력"><br>
 
         <textarea name="message" placeholder="내용 입력"></textarea>
         <button>저장</button>
-        <a href="/delete/{{ memo.id }}">삭제</a>
+        
     </form>
 </body>
 </html>
@@ -21,6 +24,8 @@
     <div>
         <h3>{{ memo.title }}</h3>
         <p>{{ memo.message }}</p>
-        
+
+        <a href="/delete/{{ memo.id }}">삭제</a>
+        <a href="/edit/{{ memo.id }}">수정</a>
     </div>
 {% endfor %}
