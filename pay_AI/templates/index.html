@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> AI 가계부 </title>
+</head>
+<body>
+    <h1>AI 가계부</h1>
+    <p>
+        ({{ session.username }}) 님 로그인 중
+    </p>
+    <button><a href="/logout">로그아웃</a></button>
+    
+
+    <hr>
+    <form method="POST">
+        <input type="text" name="expense_text" placeholder="예 : 오늘 점심으로 12000원 썼어" style="width: 300px;">
+        <button type="submit">저장</button>
+    </form>
+    <h2>총 지출: {{ total }}원</h2> <!-- Flask에서 넘겨준 total 값을 화면에 보여준다. -->
+    <hr>
+
+    <h2>지출 내역</h2>
+    
+    {% for expense in expenses %} <!-- Flask에서 넘겨준 지출 목록을 하나씩 반복한다. -->
+    <div>
+        <strong>
+            {{ expense.category }}
+        </strong>
+            - {{ expense.amount }}원
+            - {{ expense.memo }}
+        <a href="/delete/{{ expense.id }}">
+            삭제
+        </a>
+    </div>
+    {% endfor %}
+    
+</body>
+</html>
