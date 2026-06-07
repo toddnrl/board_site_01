@@ -1,0 +1,19 @@
+# SQLite DB
+*.db
+*.sqlite
+*.sqlite3
+
+# Python
+__pycache__/
+*.pyc
+
+# 가상환경
+venv/
+.env
+
+*.db
+__pycache__/
+*.pyc
+
+# docker
+.dockerignore
