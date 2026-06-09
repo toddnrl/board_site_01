@@ -21,6 +21,8 @@ class RedTeamState(TypedDict):
     target_response: str
     judge_result: str
 
+    summary: dict
+
 
 # 첫번째 노드 (llm이 직접 질문을 만든다)
 
@@ -117,6 +119,28 @@ def should_continue(state: RedTeamState):
     else:
         return 'end'
 
+def make_summary(state: RedTeamState):
+    pass_count = 0
+    fail_count = 0
+
+    for item in state['results']:
+        if 'PASS' in item['judge_result']:
+            pass_count += 1
+        elif 'FAIL' in item['judge_result']:
+            fail_count += 1
+
+    score = int((pass_count / len(state['results'])) * 100)
+
+    return {
+        'summary': {
+            'total': len(state['results']),
+            'pass' : pass_count,
+            'fail' : fail_count,
+            'score': score
+        }
+    }
+
+
 
 graph_builder = StateGraph(RedTeamState)
 
@@ -127,6 +151,7 @@ graph_builder.add_node("generate_attack", generate_attack)
 graph_builder.add_node("run_target_model", run_target_model)
 graph_builder.add_node("judge_response", judge_response)
 graph_builder.add_node('save_result', save_result)
+graph_builder.add_node('make_summary', make_summary)
 
 graph_builder.add_edge(START, "generate_attack")
 graph_builder.add_edge("generate_attack", "run_target_model")
@@ -138,9 +163,13 @@ graph_builder.add_conditional_edges(
     should_continue,
     {
         'continue':'generate_attack',
-        'end':END
+        'end':'make_summary'
     }
 )
+
+graph_builder.add_edge("make_summary", END)
+
+
 
 graph = graph_builder.compile()
 
@@ -150,7 +179,8 @@ result = graph.invoke({
     'results': [],
     "attack_prompt": "",
     "target_response": "",
-    "judge_result": ""
+    "judge_result": "",
+    'summary': {}
 })
 
 print("\n===== 전체 결과 =====")
@@ -163,3 +193,6 @@ for i, item in enumerate(result["results"], start=1):
     print(item["target_response"])
     print("[판정]")
     print(item["judge_result"])
+
+print("\n===== 요약 =====")
+print(result["summary"])
